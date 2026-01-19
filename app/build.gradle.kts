@@ -85,13 +85,13 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // For instrumentation tests
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.55")
-    kspAndroidTest("com.google.dagger:hilt-compiler:2.55")
-
-    // For local unit tests
-    testImplementation("com.google.dagger:hilt-android-testing:2.55")
-    kspTest("com.google.dagger:hilt-compiler:2.55")
+//    // For instrumentation tests
+//    androidTestImplementation("com.google.dagger:hilt-android-testing:2.55")
+//    kspAndroidTest("com.google.dagger:hilt-compiler:2.55")
+//
+//    // For local unit tests
+//    testImplementation("com.google.dagger:hilt-android-testing:2.55")
+//    kspTest("com.google.dagger:hilt-compiler:2.55")
 
     //Network
     implementation(libs.retrofit)
@@ -105,17 +105,12 @@ dependencies {
     //Coroutines
     implementation(libs.kotlinx.coroutines.core)
 
-    //MVIKotlin
-//    implementation(libs.mvikotlin)
-//    implementation(libs.mvikotlin.main)
-//    implementation(libs.mvikotlin.extensions.coroutines)
-//    implementation(libs.mvikotlin.logging)
-
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil)
 
     //Hilt
     implementation(libs.dagger.hilt)
+    implementation(libs.hilt.viewmodel)
     ksp(libs.dagger.hilt.compiler)
 }

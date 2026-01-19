@@ -16,6 +16,7 @@ kotlinxCoroutines = "1.10.2"
 kotlinxAtomicfu = "0.28.0"
 coilCompose = "2.7.0"
 hilt = "2.55"
+hiltViewModel = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "k
 
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt-viewmodel = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltViewModel" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

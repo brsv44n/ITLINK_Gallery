@@ -2,10 +2,16 @@ package com.brsv.itlink_gallery.di
 
 import android.content.Context
 import android.util.Log
+import coil.ImageLoader
+import coil.request.CachePolicy
 import com.brsv.itlink_gallery.BuildConfig
 import com.brsv.itlink_gallery.data.local.FileCacheManagerImpl
 import com.brsv.itlink_gallery.data.network.FileApi
+import com.brsv.itlink_gallery.data.repository.ImageRepositoryImpl
+import com.brsv.itlink_gallery.data.repository.MainRepositoryImpl
 import com.brsv.itlink_gallery.domain.FileCacheManager
+import com.brsv.itlink_gallery.domain.repository.ImageRepository
+import com.brsv.itlink_gallery.domain.repository.MainRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -102,4 +108,38 @@ object AppModule {
             fileApi = fileApi,
             ioDispatcher = ioDispatcher
         )
+
+    @Provides
+    @Singleton
+    fun provideContentRepository(
+        fileCacheManager: FileCacheManager,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): MainRepository =
+        MainRepositoryImpl(
+            fileCacheManager = fileCacheManager,
+            ioDispatcher = ioDispatcher
+        )
+
+    @Provides
+    @Singleton
+    fun provideImageLoader(
+        @ApplicationContext context: Context
+    ): ImageLoader =
+        ImageLoader.Builder(context)
+            .respectCacheHeaders(false)
+            .diskCachePolicy(CachePolicy.DISABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideImageRepository(
+        @ApplicationContext context: Context,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+        imageLoader: ImageLoader
+    ): ImageRepository = ImageRepositoryImpl(
+        context = context,
+        imageLoader = imageLoader,
+        ioDispatcher = ioDispatcher
+    )
 }
