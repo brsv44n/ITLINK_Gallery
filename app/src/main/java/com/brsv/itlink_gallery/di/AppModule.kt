@@ -12,6 +12,9 @@ import com.brsv.itlink_gallery.data.repository.MainRepositoryImpl
 import com.brsv.itlink_gallery.domain.FileCacheManager
 import com.brsv.itlink_gallery.domain.repository.ImageRepository
 import com.brsv.itlink_gallery.domain.repository.MainRepository
+import com.brsv.itlink_gallery.presentation.main_screen.MainScreenComponentFactory
+import com.brsv.itlink_gallery.presentation.main_screen.MainScreenViewModel
+import com.brsv.itlink_gallery.presentation.main_screen.fullscreen_image.FullscreenImageComponentFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -141,5 +144,28 @@ object AppModule {
         context = context,
         imageLoader = imageLoader,
         ioDispatcher = ioDispatcher
+    )
+
+    @Provides
+    @Singleton
+    fun provideMainScreenViewModel(
+        mainRepository: MainRepository
+    ): MainScreenViewModel = MainScreenViewModel(
+        contentRepository = mainRepository
+    )
+
+    @Provides
+    @Singleton
+    fun providesFullscreenImageComponentFactory(): FullscreenImageComponentFactory =
+        FullscreenImageComponentFactory()
+
+    @Provides
+    @Singleton
+    fun providesMainScreenComponentFactory(
+        viewModel: MainScreenViewModel,
+        fullscreenImageComponentFactory: FullscreenImageComponentFactory
+    ): MainScreenComponentFactory = MainScreenComponentFactory(
+        viewModel = viewModel,
+        fullscreenImageComponentFactory = fullscreenImageComponentFactory
     )
 }

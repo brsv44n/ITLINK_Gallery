@@ -1,11 +1,9 @@
 package com.brsv.itlink_gallery.presentation.main_screen
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brsv.itlink_gallery.domain.models.toUiItem
 import com.brsv.itlink_gallery.domain.repository.MainRepository
-import com.brsv.itlink_gallery.presentation.main_screen.models.UiContentItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,11 +22,11 @@ class MainScreenViewModel @Inject constructor(
     private val contentRepository: MainRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ContentUiState>(ContentUiState.Loading)
-    val state: StateFlow<ContentUiState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<ContentUiState>(ContentUiState.Loading)
+    val uiState: StateFlow<ContentUiState> = _uiState.asStateFlow()
 
-    private val _uiEvents = MutableSharedFlow<UiEvent>()
-    val uiEvents: SharedFlow<UiEvent> = _uiEvents
+    private val _uiEvents = MutableSharedFlow<MainScreenComponent.UiEvent>()
+    val uiEvents: SharedFlow<MainScreenComponent.UiEvent> = _uiEvents
 
     init {
         observeContent()
@@ -37,11 +35,11 @@ class MainScreenViewModel @Inject constructor(
 
     private fun loadInitial() {
         viewModelScope.launch {
-            _state.update { ContentUiState.Loading }
+            _uiState.update { ContentUiState.Loading }
 
             contentRepository.getAllItems()
                 .onFailure { error ->
-                    _state.update {
+                    _uiState.update {
                         ContentUiState.Error(
                             error = error.message
                         )
@@ -56,7 +54,7 @@ class MainScreenViewModel @Inject constructor(
                 items.map { it.toUiItem(isPreview = true) }
             }
             .onEach { uiItems ->
-                _state.update {
+                _uiState.update {
                     ContentUiState.Success(
                         items = uiItems
                     )
@@ -65,27 +63,4 @@ class MainScreenViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun onEvent(event: UiEvent) {
-        when (event) {
-            is UiEvent.ItemClicked -> {
-
-            }
-        }
-    }
-
-    sealed interface UiEvent {
-        data class ItemClicked(val index: Int) : UiEvent
-    }
-
-}
-
-@Stable
-sealed class ContentUiState {
-    data object Loading : ContentUiState()
-
-    data class Error(val error: String?) : ContentUiState()
-
-    data class Success(
-        val items: List<UiContentItem> = emptyList(),
-    ) : ContentUiState()
 }

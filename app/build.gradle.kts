@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.dagger.hilt)
 }
@@ -85,13 +86,9 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-//    // For instrumentation tests
-//    androidTestImplementation("com.google.dagger:hilt-android-testing:2.55")
-//    kspAndroidTest("com.google.dagger:hilt-compiler:2.55")
-//
-//    // For local unit tests
-//    testImplementation("com.google.dagger:hilt-android-testing:2.55")
-//    kspTest("com.google.dagger:hilt-compiler:2.55")
+    //Decompose navigation
+    implementation(libs.decompose)
+    implementation(libs.decompose.compose)
 
     //Network
     implementation(libs.retrofit)
