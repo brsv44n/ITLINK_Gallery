@@ -32,7 +32,6 @@ class FileCacheManagerImpl @Inject constructor(
 ) : FileCacheManager {
 
     companion object {
-        private const val TAG = "FileCacheManager"
 
         private const val CACHE_DURATION_MS = 24 * 60 * 60 * 1000L // 24 часа
     }

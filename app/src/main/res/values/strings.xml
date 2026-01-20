@@ -3,4 +3,5 @@
 
     <string name="error_label_unknown">Unknown Error</string>
     <string name="action_retry">Retry</string>
+    <string name="action_share_image">Share</string>
 </resources>

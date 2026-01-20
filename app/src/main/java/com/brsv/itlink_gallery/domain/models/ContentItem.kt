@@ -9,7 +9,9 @@ sealed interface ContentItem {
 
     data class Image(
         override val raw: String,
-        val url: String
+        val url: String,
+        val cachedPreviewPath: String? = null,
+        val cachedOriginalPath: String? = null
     ) : ContentItem
 
     data class Text(

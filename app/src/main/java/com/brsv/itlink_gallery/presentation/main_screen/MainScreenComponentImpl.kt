@@ -35,8 +35,7 @@ class MainScreenComponentImpl @Inject constructor(
             }
 
             is MainScreenComponent.Event.RetryClick -> {
-                TODO("call retry method from viewmodel")
-                //viewModel
+                viewModel.reload()
             }
         }
     }
@@ -67,6 +66,10 @@ class MainScreenComponentImpl @Inject constructor(
         when (output) {
             FullscreenImageComponent.Output.Close -> {
                 fullscreenImageSlotNavigation.dismiss()
+            }
+
+            is FullscreenImageComponent.Output.ShareClose -> {
+                viewModel.shareImage(output.imageUrl)
             }
         }
     }

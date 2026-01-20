@@ -1,19 +1,29 @@
 package com.brsv.itlink_gallery.presentation.main_screen.fullscreen_image
 
 import com.arkivanov.decompose.ComponentContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class FullscreenImageComponentImpl(
     componentContext: ComponentContext,
     private val imageUrl: String,
     private val output: (FullscreenImageComponent.Output) -> Unit,
 ) : FullscreenImageComponent, ComponentContext by componentContext {
+
+    override val imageUrlState: StateFlow<String> = MutableStateFlow(imageUrl)
+
     override fun onEvent(event: FullscreenImageComponent.Event) {
-        TODO("Not yet implemented")
+        when (event) {
+            is FullscreenImageComponent.Event.Close -> {
+                output.invoke(FullscreenImageComponent.Output.Close)
+            }
+
+            is FullscreenImageComponent.Event.ShareClick -> {
+                output.invoke(FullscreenImageComponent.Output.ShareClose(imageUrl))
+            }
+        }
     }
-
-
 }
-
 
 class FullscreenImageComponentFactory {
     fun invoke(

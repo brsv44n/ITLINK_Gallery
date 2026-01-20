@@ -23,7 +23,7 @@ interface MainScreenComponent {
     }
 
     sealed interface UiEvent {
-        data class ItemClicked(val index: Int) : UiEvent
+        data class ShareImage(val imageUrl: String) : UiEvent
     }
 
     sealed interface Output {

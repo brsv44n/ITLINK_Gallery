@@ -1,6 +1,6 @@
 package com.brsv.itlink_gallery.presentation.main_screen.ui
 
-import android.widget.Toast
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,13 +20,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.brsv.itlink_gallery.R
 import com.brsv.itlink_gallery.presentation.main_screen.ContentUiState
 import com.brsv.itlink_gallery.presentation.main_screen.MainScreenComponent
 import com.brsv.itlink_gallery.presentation.main_screen.PreviewMainScreenComponent
+import com.brsv.itlink_gallery.presentation.main_screen.fullscreen_image.FullscreenImageContent
 import com.brsv.itlink_gallery.presentation.main_screen.models.UiContentItem
 import com.brsv.itlink_gallery.presentation.main_screen.models.UiImage
 import com.brsv.itlink_gallery.presentation.ui.theme.ITLINK_GalleryTheme
+import com.brsv.itlink_gallery.presentation.ui_kit.ErrorScreen
+import com.brsv.itlink_gallery.presentation.ui_kit.ProgressLoader
 import com.brsv.itlink_gallery.presentation.ui_kit.RetryableAsyncImage
 
 @Composable
@@ -37,6 +39,25 @@ fun MainScreenContent(
     component: MainScreenComponent
 ) {
     val uiState by component.uiState.collectAsState()
+
+    val context = LocalContext.current
+
+    //Вынес создание интента сюда просто потому что в данном контексте проще
+    //но лучше создать отдельный UseCase для отправки интентов
+    LaunchedEffect(component.uiEvents) {
+        component.uiEvents.collect { event ->
+            when (event) {
+                is MainScreenComponent.UiEvent.ShareImage -> {
+                    val shareIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, event.imageUrl)
+                    }
+                    context.startActivity(Intent.createChooser(shareIntent, "Share"))
+                }
+            }
+        }
+    }
 
     Scaffold(
         modifier = modifier,
@@ -69,6 +90,13 @@ fun MainScreenContent(
                     )
                 }
             }
+        }
+        val fullscreenImageSlot by component.fullscreenImageComponent.subscribeAsState()
+        fullscreenImageSlot.child?.let {
+            FullscreenImageContent(
+                modifier = Modifier,
+                component = it.instance
+            )
         }
     }
 }
@@ -116,41 +144,6 @@ private fun ImagesGrid(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun ProgressLoader(
-    modifier: Modifier
-) {
-    CircularProgressIndicator(
-        modifier = modifier,
-        strokeWidth = 4.dp,
-        color = MaterialTheme.colorScheme.primary,
-    )
-}
-
-@Composable
-private fun ErrorScreen(
-    modifier: Modifier,
-    errorText: String,
-    onRetryClicked: () -> Unit
-) {
-    Box(modifier = modifier) {
-        Toast.makeText(
-            LocalContext.current,
-            errorText,
-            Toast.LENGTH_SHORT
-        ).show()
-
-        Button(
-            modifier = Modifier.align(Alignment.Center),
-            onClick = onRetryClicked
-        ) {
-            Text(
-                text = stringResource(R.string.action_retry),
-            )
         }
     }
 }

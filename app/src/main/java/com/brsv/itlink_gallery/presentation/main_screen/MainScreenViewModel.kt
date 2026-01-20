@@ -63,4 +63,15 @@ class MainScreenViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun reload() {
+        observeContent()
+        loadInitial()
+    }
+
+    fun shareImage(imageUrl: String) {
+        viewModelScope.launch {
+            _uiEvents.emit(MainScreenComponent.UiEvent.ShareImage(imageUrl))
+        }
+    }
+
 }
