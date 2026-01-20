@@ -116,11 +116,13 @@ object AppModule {
     @Singleton
     fun provideContentRepository(
         fileCacheManager: FileCacheManager,
+        imageRepository: ImageRepository,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): MainRepository =
         MainRepositoryImpl(
             fileCacheManager = fileCacheManager,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = ioDispatcher,
+            imageRepository = imageRepository
         )
 
     @Provides
