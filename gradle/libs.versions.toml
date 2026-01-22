@@ -13,6 +13,7 @@ retrofit = "3.0.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
 ksp = "2.0.21-1.0.25"
 kotlinxCoroutines = "1.10.2"
+kotlinxCoroutinesTest = "1.10.2"
 kotlinxAtomicfu = "0.28.0"
 coilCompose = "2.7.0"
 hilt = "2.55"
@@ -54,6 +55,7 @@ logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomicfu" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
